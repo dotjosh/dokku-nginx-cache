@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
 APP=$1
-NGINX_CONF=$DOKKU_ROOT/$APP/nginx.conf.d/nginx-cache.conf
-NGINX_CONF_MAIN=$DOKKU_ROOT/$APP/nginx.conf
 
 # Exit if proxy cache isn't enabled
-if [[ ! -d $NGINX_CONF ]]; then
+if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
 	exit 0
 fi
 
-function add_setting {
-	sed -i -r "s/upstream.*$/\0\n  $1/g" $NGINX_CONF_MAIN
+function add_setting_upstream {
+	sed -i -r "s/upstream.*$/\0\n  $1/g" $DOKKU_ROOT/$APP/nginx.conf
 }
 
-add_setting "proxy_cache_key \$scheme\$request_method\$host\$request_uri;"
-add_setting "proxy_cache_path \\/tmp\\/nginx levels:1-2 keys_zone=dokku:10m inactive=60m use_temp_path=off;"
+function add_setting_location {
+	sed -i -r "s/proxy_pass.*$/\0\n    $1/g" $DOKKU_ROOT/$APP/nginx.conf
+}
+
+add_setting_upstream "proxy_cache_key \$scheme\$request_method\$host\$request_uri;"
+add_setting_upstream "proxy_cache_path \\/tmp\\/nginx levels:1-2 keys_zone=dokku:10m inactive=60m use_temp_path=off;"
+
+add_setting_location "proxy_cache dokku;"
