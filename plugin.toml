@@ -1,0 +1,4 @@
+[plugin]
+description = "dokku nginx cache plugin"
+version = "0.2.0"
+[plugin.config]

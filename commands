@@ -1,37 +1,58 @@
 #!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
-source "$(dirname $0)/../dokku_common"
+PLUGIN_BASE_PATH="$PLUGIN_PATH"
+if [[ -n $DOKKU_API_VERSION ]]; then
+  PLUGIN_BASE_PATH="$PLUGIN_ENABLED_PATH"
+fi
+
+source "$PLUGIN_BASE_PATH/common/functions"
 source "$(dirname $0)/vars"
 
 case "$1" in
-	nginx:cache:enable)
+  nginx:cache:enable)
 		verify_app_name "$2"
-		verify_max_args 2 "$@"
 
 		mkdir -p $CACHE_DIR
-		echo Enabled Nginx proxy cache for $APP
+		echo "Enabled nginx proxy cache for $APP"
 
-		redeploy_app "$APP"
+    dokku_log_info1 "Restarting app $APP"
+    dokku ps:restart "$APP"
 		;;
 
 	nginx:cache:disable)
 		verify_app_name "$2"
-		verify_max_args 2 "$@"
 
 		rm -rf $DOKKU_ROOT/$APP/NGINX_CACHE
-		echo Disabled Nginx proxy cache for $APP
+		echo "Disabled nginx proxy cache for $APP"
 
-		redeploy_app "$APP"
+    dokku_log_info1 "Restarting app $APP"
+    dokku ps:restart "$APP"
 		;;
 
-	help | nginx:help | nginx:cache:help)
-		cat && cat <<-EOF
-		    nginx:cache:enable <app>                Enable Nginx proxy cache for an app
-		    nginx:cache:disable <app>               Disable Nginx proxy cache for an app
-		EOF
-		;;
+  help | nginx:help | nginx:cache:help)
+    help_content_func () {
+      declare desc="return help_content string"
+      cat<<help_content
+    nginx:cache:enable <app>, Enable nginx proxy cache for <app>
+    nginx:cache:disable <app>, Disable nginx proxy cache for <app>
+help_content
+    }
 
-	*)
-		exit $DOKKU_NOT_IMPLEMENTED_EXIT
-		;;
+    if [[ $1 = "nginx:cache:help" ]] ; then
+        echo -e 'Usage: dokku nginx:cache:[enable|disable] <app>'
+        echo ''
+        echo 'Toggle nginx proxy cache.'
+        echo ''
+        echo 'Commands:'
+        help_content_func | sort | column -c2 -t -s,
+    else
+        help_content_func
+    fi
+    ;;
+
+  *)
+    exit $DOKKU_NOT_IMPLEMENTED_EXIT
+    ;;
+
 esac
