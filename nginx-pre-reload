@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+APP=$1
+NGINX_CONF=$DOKKU_ROOT/$APP/nginx.conf.d/nginx-cache.conf
+NGINX_CONF_MAIN=$DOKKU_ROOT/$APP/nginx.conf
+
+# Exit if proxy cache isn't enabled
+if [[ ! -d $NGINX_CONF ]]; then
+	exit 0
+fi
+
+cat >>$NGINX_CONF_MAIN <<EOL
+proxy_cache_path /tmp/nginx levels:1-2 keys_zone=dokku-$APP:10m inactive=60m use_temp_path=off;
+proxy_cache_key \$scheme\$request_method\$host\$request_uri;
+EOL
