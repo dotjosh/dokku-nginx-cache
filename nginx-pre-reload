@@ -9,7 +9,9 @@ if [[ ! -d $NGINX_CONF ]]; then
 	exit 0
 fi
 
-cat >>$NGINX_CONF_MAIN <<EOL
-proxy_cache_path /tmp/nginx levels:1-2 keys_zone=dokku-$APP:10m inactive=60m use_temp_path=off;
-proxy_cache_key \$scheme\$request_method\$host\$request_uri;
-EOL
+function add_setting {
+	sed -i -r "s/upstream.*$/\0\n  $1/g" $NGINX_CONF_MAIN
+}
+
+add_setting "proxy_cache_key \$scheme\$request_method\$host\$request_uri;"
+add_setting "proxy_cache_path \\/tmp\\/nginx levels:1-2 keys_zone=dokku:10m inactive=60m use_temp_path=off;"
