@@ -30,7 +30,7 @@ case "$1" in
     dokku ps:restart "$APP"
 		;;
 
-  help | nginx:help | nginx:cache:help)
+  help | nginx:cache:help)
     help_content_func () {
       declare desc="return help_content string"
       cat<<help_content
