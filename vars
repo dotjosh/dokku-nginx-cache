@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-CACHE_DIR=$DOKKU_ROOT/$APP/NGINX_CACHE

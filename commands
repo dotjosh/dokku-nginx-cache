@@ -5,16 +5,22 @@ PLUGIN_BASE_PATH="$PLUGIN_PATH"
 if [[ -n $DOKKU_API_VERSION ]]; then
   PLUGIN_BASE_PATH="$PLUGIN_ENABLED_PATH"
 fi
-
 source "$PLUGIN_BASE_PATH/common/functions"
-source "$(dirname $0)/vars"
 
 case "$1" in
   nginx:cache:enable)
 		verify_app_name "$2"
-    APP="$2"
 
-		mkdir -p $CACHE_DIR
+    APP="$2"
+    NGINX_CONF=$DOKKU_ROOT/$APP/nginx.conf.d/nginx-cache.conf
+    CACHE_ZONE=cache-$APP
+
+    rm -rf $NGINX_CONF
+    cat >$NGINX_CONF <<EOL
+proxy_cache_path /tmp/nginx levels:1-2 keys_zone=$CACHE_ZONE:10m inactive=60m use_temp_path=off;
+proxy_cache_key \$scheme\$request_method\$host\$request_uri;
+proxy_cache $CACHE_ZONE;
+EOL
 		echo "Enabled nginx proxy cache for $APP"
 
     dokku_log_info1 "Restarting app $APP"
@@ -23,9 +29,11 @@ case "$1" in
 
 	nginx:cache:disable)
 		verify_app_name "$2"
-    APP="$2"
 
-		rm -rf $DOKKU_ROOT/$APP/NGINX_CACHE
+    APP="$2"
+    NGINX_CONF=$DOKKU_ROOT/$APP/nginx.conf.d/nginx-cache.conf
+
+		rm -rf $NGINX_CONF
 		echo "Disabled nginx proxy cache for $APP"
 
     dokku_log_info1 "Restarting app $APP"
