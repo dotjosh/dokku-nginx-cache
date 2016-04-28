@@ -3,7 +3,7 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
 APP=$1
 
-# Exit if proxy cache isn't enabled
+# Exit if nginx-cache is not enabled for this app
 if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
 	exit 0
 fi
