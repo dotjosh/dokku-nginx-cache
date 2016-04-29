@@ -23,11 +23,15 @@ case "$1" in
 		verify_app_name "$2"
     APP="$2"
 
-		rm -rf $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
-		echo "Disabled nginx proxy cache for $APP"
+    if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
+    	echo "Nginx proxy cache is not enabled for $APP"
+    else
+      rm -rf $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
+  		echo "Disabled nginx proxy cache for $APP"
 
-    dokku_log_info1 "Restarting app $APP"
-    dokku ps:restart "$APP"
+      dokku_log_info1 "Restarting app $APP"
+      dokku ps:restart "$APP"
+    fi
 		;;
 
   help | nginx:cache:help)
