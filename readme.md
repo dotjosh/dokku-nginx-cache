@@ -9,6 +9,12 @@ dokku plugin:install https://github.com/Aluxian/dokku-nginx-cache.git nginx-cach
 ```
 
 ### Quick start
+Add the following to /etc/nginx/nginx.conf **above** the virtual host config:
+
+```
+# enable caching
+proxy_cache_path /tmp/nginx/cache levels=1:2 keys_zone=dokku:10m max_size=5g inactive=60m use_temp_path=off;
+```
 
 Enable nginx request caching
 
