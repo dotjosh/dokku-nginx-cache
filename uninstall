@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
-# Remove the plugin files
-
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/config"
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
-PLUGIN="$1"
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
+source "$PLUGIN_CORE_AVAILABLE_PATH/config/functions"
 
-[[ "$PLUGIN" = "nginx-cache" ]] && rm /etc/nginx/conf.d/dokku-cache.conf
+plugin-uninstall() {
+
+  # remove the configuration if available
+  if [[ -e /etc/nginx/conf.d/dokku-cache.conf ]]; then
+    dokku_log_info1 "Removing cache configuration from NGINX settings directory"
+    rm /etc/nginx/conf.d/dokku-cache.conf
+  fi
+}
+
+plugin-uninstall "$@"

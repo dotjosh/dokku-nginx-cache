@@ -8,7 +8,7 @@ fi
 source "$PLUGIN_BASE_PATH/common/functions"
 
 case "$1" in
-  help | nginx-cache:help)
+  help | nginx-cache:help | nginx-cache)
     help_content_func () {
       declare desc="return help_content string"
       cat<<help_content
