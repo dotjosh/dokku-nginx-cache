@@ -6,7 +6,7 @@ source "$PLUGIN_CORE_AVAILABLE_PATH/config/functions"
 nginx_cache_clear() {
   declare desc="Clear the nginx cache for all the apps"
   local cmd="nginx-cache:clear"
-  rm -rf /var/cache/nginx/*
+  find /var/cache/nginx -type f -delete
 }
 
 nginx_cache_clear "$@"
