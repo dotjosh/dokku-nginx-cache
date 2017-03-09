@@ -3,13 +3,14 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
 source "$PLUGIN_CORE_AVAILABLE_PATH/config/functions"
 
-plugin-uninstall() {
+plugin-nginx-cache-uninstall() {
 
+  dokku_log_info1 "Removing cache configuration from NGINX settings directory"
   # remove the configuration if available
   if [[ -e /etc/nginx/conf.d/dokku-cache.conf ]]; then
-    dokku_log_info1 "Removing cache configuration from NGINX settings directory"
     rm /etc/nginx/conf.d/dokku-cache.conf
   fi
 }
 
-plugin-uninstall "$@"
+PLUGIN="$1"
+[[ "$PLUGIN" = "nginx-cache" ]] && plugin-nginx-cache-uninstall "$@"
