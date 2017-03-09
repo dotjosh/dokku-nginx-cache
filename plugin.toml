@@ -1,4 +1,4 @@
 [plugin]
-description = "Dokku NGINX cache plugin"
-version = "0.2.1"
+description = "Manage the app cache in NGNINX"
+version = "0.3.0"
 [plugin.config]
