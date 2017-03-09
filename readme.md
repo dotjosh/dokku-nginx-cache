@@ -1,6 +1,6 @@
-# dokku-nginx-cache
+# Dokku plugin nginx-cache
 
-Wire in nginx's proxy cache directives.
+Easily enable the NGINX cache.
 
 ### Install
 
@@ -10,16 +10,16 @@ dokku plugin:install https://github.com/koalalorenzo/dokku-nginx-cache.git nginx
 
 ### Quick start
 
-Enable nginx request caching
+Enable nginx caching
 
 ```
-$ dokku nginx-cache:enable myapp
+$ dokku nginx-cache:enable MYAPP
 ```
 
-Disable nginx request caching
+Disable nginx cache for your app
 
 ```
-$ dokku nginx-cache:disable myapp
+$ dokku nginx-cache:disable MYAPP
 ```
 
 ### Configuration
