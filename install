@@ -5,7 +5,7 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
 PLUGIN="$1"
 
-if [[ "$PLUGIN" != "dokku-nginx-cache" ]]; then
+if [[ "$PLUGIN" != "nginx-cache" ]]; then
   exit 0
 fi
 

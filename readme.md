@@ -13,13 +13,13 @@ dokku plugin:install https://github.com/koalalorenzo/dokku-nginx-cache.git nginx
 Enable nginx request caching
 
 ```
-$ dokku nginx:cache:enable myapp
+$ dokku nginx-cache:enable myapp
 ```
 
 Disable nginx request caching
 
 ```
-$ dokku nginx:cache:disable myapp
+$ dokku nginx-cache:disable myapp
 ```
 
 ### Configuration

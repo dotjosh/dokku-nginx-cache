@@ -8,43 +8,17 @@ fi
 source "$PLUGIN_BASE_PATH/common/functions"
 
 case "$1" in
-  nginx:cache:enable)
-		verify_app_name "$2"
-    APP="$2"
-
-    touch $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
-		echo "Enabled nginx proxy cache for $APP"
-
-    dokku_log_info1 "Restarting app $APP"
-    dokku ps:restart "$APP"
-		;;
-
-	nginx:cache:disable)
-		verify_app_name "$2"
-    APP="$2"
-
-    if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
-    	echo "Nginx proxy cache is not enabled for $APP"
-    else
-      rm -rf $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
-  		echo "Disabled nginx proxy cache for $APP"
-
-      dokku_log_info1 "Restarting app $APP"
-      dokku ps:restart "$APP"
-    fi
-		;;
-
-  help | nginx:cache:help)
+  help | nginx-cache:help)
     help_content_func () {
       declare desc="return help_content string"
       cat<<help_content
-    nginx:cache:enable <app>, Enable nginx proxy cache for <app>
-    nginx:cache:disable <app>, Disable nginx proxy cache for <app>
+    nginx-cache:enable <app>, Enable nginx proxy cache for <app>
+    nginx-cache:disable <app>, Disable nginx proxy cache for <app>
 help_content
     }
 
-    if [[ $1 = "nginx:cache:help" ]] ; then
-        echo -e 'Usage: dokku nginx:cache:[enable|disable] <app>'
+    if [[ $1 = "nginx-cache:help" ]] ; then
+        echo -e 'Usage: dokku nginx-cache:[enable|disable] <app>'
         echo ''
         echo 'Toggle nginx proxy cache.'
         echo ''

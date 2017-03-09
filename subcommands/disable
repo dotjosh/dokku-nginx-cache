@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
+source "$PLUGIN_CORE_AVAILABLE_PATH/config/functions"
+
+nginx_cache_disable() {
+  declare desc="Disable the cache for a specific app"
+  local cmd="nginx-cache:disable"
+
+  # Support --app/$DOKKU_APP_NAME flag by reordering args into "$cmd $DOKKU_APP_NAME $@"
+  local argv=("$@")
+  [[ ${argv[0]} == "$cmd" ]] && shift 1
+  [[ ! -z $DOKKU_APP_NAME ]] && set -- $DOKKU_APP_NAME $@
+  set -- $cmd $@
+  ##
+
+  verify_app_name "$2"
+  local APP="$2"
+
+  if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
+    dokku_log_info1 "NGINX proxy cache is not enabled for $APP"
+  else
+    dokku_log_info1 "Disabling NGINX proxy cache for $APP"
+    rm -rf $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
+
+    dokku_log_info1 "Restarting app $APP"
+    dokku ps:restart "$APP"
+  fi
+}
+
+nginx_cache_disable "$@"
