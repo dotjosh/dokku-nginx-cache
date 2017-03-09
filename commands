@@ -10,6 +10,7 @@ case "$1" in
         cat<<help_content
       nginx-cache:enable <app>, Enable nginx proxy cache for <app>
       nginx-cache:disable <app>, Disable nginx proxy cache for <app>
+      nginx-cache:clear clear the cache for all the apps
 help_content
       }
 

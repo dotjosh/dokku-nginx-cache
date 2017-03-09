@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
+source "$PLUGIN_CORE_AVAILABLE_PATH/config/functions"
+
+nginx_cache_clear() {
+  declare desc="Clear the nginx cache for all the apps"
+  local cmd="nginx-cache:clear"
+  rm -rf /var/cache/nginx/*
+}
+
+nginx_cache_clear "$@"
