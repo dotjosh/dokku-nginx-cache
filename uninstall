@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Remove the plugin files
+
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+PLUGIN="$1"
+
+[[ "$PLUGIN" = "dokku-nginx-cache" ]] && rm /etc/nginx/conf.d/dokku-cache.conf
