@@ -8,6 +8,20 @@ Easily enable the NGINX cache.
 dokku plugin:install https://github.com/koalalorenzo/dokku-nginx-cache.git nginx-cache
 ```
 
+To validate if it is working you can simply check the `X-Cache-Status`. You can
+that easily with `curl` from the command line:
+
+```
+$ curl -I http://YOURAMAZINAPP.DOMAIN.EXT/
+```
+
+You can validate it by running it multiple times, and after the first time it
+will show something like:
+
+```
+X-Cache-Status: HIT
+```
+
 ### Quick start
 
 Enable nginx caching
@@ -25,6 +39,8 @@ $ dokku nginx-cache:disable MYAPP
 ### Configuration
 
 Currently there are no configuration options. However, Nginx does obey a number of caching- and `X-Accel-*`-related headers.
+
+You can always play around by editing directly the file in `/etc/nginx/conf.d/dokku-cache.conf`
 
 Snippet from [nginx docs][]:
 
