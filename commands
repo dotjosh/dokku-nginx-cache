@@ -24,7 +24,7 @@ help_content
         help_content_func
       else
         cat<<help_desc
-      nginx-cache, Plugin to easily cache requests
+  nginx-cache, Plugin to easily cache requests
 help_desc
       fi
     ;;
