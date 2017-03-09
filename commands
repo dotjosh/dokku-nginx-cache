@@ -4,31 +4,29 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
 case "$1" in
 
-  help | nginx-cache:help)
-    help_content_func() {
-      #shellcheck disable=SC2034
-    help_content_func () {
-      declare desc="return help_content string"
-      cat<<help_content
-    nginx-cache:enable <app>, Enable nginx proxy cache for <app>
-    nginx-cache:disable <app>, Disable nginx proxy cache for <app>
+  help | nginx-cache:help )
+      help_content_func () {
+        declare desc="return help_content string"
+        cat<<help_content
+      nginx-cache:enable <app>, Enable nginx proxy cache for <app>
+      nginx-cache:disable <app>, Disable nginx proxy cache for <app>
 help_content
-    }
+      }
 
-    if [[ $1 = "nginx-cache:help" ]]; then
-      echo -e 'Usage: dokku nginx-cache[:COMMAND]'
-      echo ''
-      echo 'Enable or disable cache for single apps'
-      echo ''
-      echo 'Additional commands:'
-      help_content_func | sort | column -c2 -t -s,
-    elif [[ $(ps -o command= $PPID) == *"--all"* ]]; then
-      help_content_func
-    else
-      cat<<help_desc
-    nginx-cache, Plugin to easily cache requests
+      if [[ $1 = "nginx-cache:help" ]]; then
+        echo -e 'Usage: dokku nginx-cache[:COMMAND]'
+        echo ''
+        echo 'Enable or disable cache for single apps'
+        echo ''
+        echo 'Additional commands:'
+        help_content_func | sort | column -c2 -t -s,
+      elif [[ $(ps -o command= $PPID) == *"--all"* ]]; then
+        help_content_func
+      else
+        cat<<help_desc
+      nginx-cache, Plugin to easily cache requests
 help_desc
-    fi
+      fi
     ;;
 
   *)
