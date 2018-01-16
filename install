@@ -11,12 +11,22 @@ plugin-install() {
   cat > /etc/nginx/conf.d/dokku-cache.conf << EOF
   #####
   ## INSTALLED BY DOKKU PLUGIN.
-  ## Please visit https://github.com/koalalorenzo/dokku-nginx-cache for more info
+  ## Please visit https://github.com/kvandake/dokku-nginx-cache for more info
   ####
-  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=dokku:10m inactive=60m use_temp_path=off;
   add_header X-Cache-Status \$upstream_cache_status;
 
 EOF
+
+  cat > /etc/nginx/nginx.conf << EOF
+  
+  #####
+  ## INSTALLED BY DOKKU PLUGIN.
+  ## Please visit https://github.com/kvandake/dokku-nginx-cache for more info
+  ####
+  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=dokku:10m inactive=60m use_temp_path=off;
+
+EOF
+
   chmod 0440 "/etc/nginx/conf.d/dokku-cache.conf"
 }
 
