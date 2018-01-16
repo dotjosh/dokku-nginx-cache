@@ -5,7 +5,7 @@ Easily enable the NGINX cache.
 ### Install
 
 ```
-dokku plugin:install https://github.com/koalalorenzo/dokku-nginx-cache.git nginx-cache
+dokku plugin:install https://github.com/kvandake/dokku-nginx-cache.git nginx-cache
 ```
 
 To validate if it is working you can simply check the `X-Cache-Status`. You can
