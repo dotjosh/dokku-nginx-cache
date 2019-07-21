@@ -23,8 +23,8 @@ nginx_cache_disable() {
     dokku_log_info1 "Disabling NGINX proxy cache for $APP"
     rm -rf $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
 
-    dokku_log_info1 "Restarting app $APP"
-    dokku ps:restart "$APP"
+    dokku_log_info1 "Rebuilding nginx config for $APP"
+    dokku nginx:build-config "$APP"
   fi
 }
 
