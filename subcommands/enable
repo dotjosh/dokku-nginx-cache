@@ -20,8 +20,8 @@ nginx_cache_enable() {
   dokku_log_info1 "Enabling NGINX proxy cache for $APP"
   touch $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE
 
-  dokku_log_info1 "Restarting app $APP"
-  dokku ps:restart "$APP"
+  dokku_log_info1 "Rebuilding nginx config for $APP"
+  dokku nginx:build-config "$APP"
 }
 
 nginx_cache_enable "$@"
