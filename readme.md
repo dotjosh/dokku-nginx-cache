@@ -27,13 +27,13 @@ X-Cache-Status: HIT
 Enable nginx caching
 
 ```
-$ dokku nginx:cache:enable MYAPP
+$ dokku nginx-cache:enable MYAPP
 ```
 
 Disable nginx cache for your app
 
 ```
-$ dokku nginx:cache:disable MYAPP
+$ dokku nginx-cache:disable MYAPP
 ```
 
 ### Configuration
