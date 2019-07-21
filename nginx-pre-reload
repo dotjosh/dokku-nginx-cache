@@ -9,13 +9,14 @@ if [[ ! -e $DOKKU_ROOT/$APP/NGINX_PROXY_CACHE ]]; then
 fi
 
 function add_setting_upstream {
-  sed -i -r "s/upstream.*$/\0\n  $1/g" $DOKKU_ROOT/$APP/nginx.conf
+  sed -i -r "s/upstream.*$/$1\n\0/g" $DOKKU_ROOT/$APP/nginx.conf
 }
 
 function add_setting_location {
   sed -i -r "s/proxy_pass.*$/\0\n    $1/g" $DOKKU_ROOT/$APP/nginx.conf
 }
 
+add_setting_upstream "proxy_cache_path \\/tmp\\/nginx levels:1-2 keys_zone=dokku:10m inactive=60m use_temp_path=off;"
 add_setting_location "proxy_cache_key \$scheme\$request_method\$host\$request_uri;"
 
 add_setting_location "proxy_cache dokku;"
